@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - SafePay{% endblock %}
+
+{% block content %}
+<div class="min-h-screen gradient-bg flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div class="text-center">
+            <div class="mx-auto h-20 w-20 bg-white rounded-full flex items-center justify-center shadow-lg">
+                <i class="fas fa-user-plus text-4xl text-purple-600"></i>
+            </div>
+            <h2 class="mt-6 text-4xl font-extrabold text-white">
+                Create Account
+            </h2>
+            <p class="mt-2 text-sm text-purple-100">
+                Join SafePay for secure transactions
+            </p>
+        </div>
+        
+        <div class="bg-white rounded-2xl shadow-2xl p-8">
+            {% if error %}
+            <div class="mb-4 bg-red-50 border-l-4 border-red-500 p-4 rounded">
+                <div class="flex">
+                    <i class="fas fa-exclamation-circle text-red-500 mr-3"></i>
+                    <p class="text-sm text-red-700">{{ error }}</p>
+                </div>
+            </div>
+            {% endif %}
+            
+            <form method="POST" class="space-y-6">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-user mr-2 text-purple-600"></i>Username
+                    </label>
+                    <input id="username" name="username" type="text" required 
+                           class="input-field appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                           placeholder="Choose a username">
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-lock mr-2 text-purple-600"></i>Password
+                    </label>
+                    <input id="password" name="password" type="password" required 
+                           class="input-field appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                           placeholder="Create a password">
+                </div>
+                
+                <div>
+                    <label for="balance" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-wallet mr-2 text-purple-600"></i>Initial Balance (Optional)
+                    </label>
+                    <input id="balance" name="balance" type="number" step="0.01" value="50000"
+                           class="input-field appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                           placeholder="50000">
+                </div>
+                
+                <div>
+                    <button type="submit" 
+                            class="btn-primary w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        Create Account
+                    </button>
+                </div>
+            </form>
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Already have an account?
+                    <a href="/" class="font-medium text-purple-600 hover:text-purple-500 transition">
+                        Sign in here
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

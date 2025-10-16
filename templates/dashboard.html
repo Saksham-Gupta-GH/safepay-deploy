@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - SafePay{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- Navigation -->
+    <nav class="gradient-bg shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <i class="fas fa-shield-alt text-2xl text-white mr-3"></i>
+                    <span class="text-2xl font-bold text-white">SafePay</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-white">
+                        <i class="fas fa-user-circle mr-2"></i>{{ session.user }}
+                    </span>
+                    <a href="/logout" class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-lg transition">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Balance Card -->
+        <div class="mb-8">
+            <div class="gradient-bg rounded-2xl shadow-xl p-8 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-purple-100 text-sm font-medium mb-2">Available Balance</p>
+                        <h2 class="text-5xl font-bold">₹{{ "%.2f"|format(balance) }}</h2>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-full p-6">
+                        <i class="fas fa-wallet text-4xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">Quick Actions</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <a href="/transaction" class="card-hover bg-white rounded-xl shadow-md p-6 flex items-center space-x-4 hover:shadow-xl transition">
+                    <div class="bg-purple-100 rounded-full p-4">
+                        <i class="fas fa-paper-plane text-2xl text-purple-600"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-800">New Transaction</h4>
+                        <p class="text-sm text-gray-500">Send money securely</p>
+                    </div>
+                </a>
+                
+                <div class="card-hover bg-white rounded-xl shadow-md p-6 flex items-center space-x-4">
+                    <div class="bg-green-100 rounded-full p-4">
+                        <i class="fas fa-shield-alt text-2xl text-green-600"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-800">Cryptographic Security</h4>
+                        <p class="text-sm text-gray-500">AES-256 + RSA-2048</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transaction History -->
+        <div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">Transaction History</h3>
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                {% if data %}
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">From</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">To</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Verified</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            {% for row in data %}
+                            <tr class="hover:bg-gray-50 transition">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ row[0] }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ row[1] }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ row[2] }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">₹{{ "%.2f"|format(row[10]) }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ row[11] }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    {% if row[17] == 'True' %}
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        <i class="fas fa-check-circle mr-1"></i> Verified
+                                    </span>
+                                    {% else %}
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                        <i class="fas fa-times-circle mr-1"></i> Failed
+                                    </span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-12">
+                    <i class="fas fa-inbox text-6xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500">No transactions yet</p>
+                    <a href="/transaction" class="mt-4 inline-block text-purple-600 hover:text-purple-700 font-medium">
+                        Make your first transaction <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
